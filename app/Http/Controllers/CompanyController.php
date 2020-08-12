@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\User;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class CompanyController extends Controller
 {
@@ -14,12 +18,11 @@ class CompanyController extends Controller
         $this->middleware('auth');
     }
 
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return Response
+     * @return Renderable
      */
-    public function index()
+    public function index(): Renderable
     {
         $companies = Company::all();
 
@@ -27,89 +30,87 @@ class CompanyController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
+     * @return Renderable
      */
-    public function create()
+    public function create(): Renderable
     {
-        return view('pages.companies.create', ['route' => route('company.store')]);
+        $users = User::all();
+        return view('pages.companies.create', ['users' => $users, 'route' => route('company.store')]);
     }
 
+
     /**
-     * Store a newly created resource in storage.
-     *
      * @param Request $request
-     *
-     * @return Response
+     * @return RedirectResponse
+     * @throws ValidationException
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $this->validate($request, ['name' => 'required']);
         $company = new Company();
         $company->name = $request->input('name');
         $company->save();
+        $users = $request->input('users');
+        if (count($users) > 0) {
+            $company->users()->attach($users);
+        }
+        $company->save();
 
         return redirect()->route('company.index')->with('success', __('Successfully saved'));
     }
 
+
     /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     *
-     * @return Response
+     * @param $id
+     * @return Renderable
      */
-    public function show($id)
+    public function show($id): Renderable
     {
         $company = Company::find($id);
 
         return view('pages.companies.show')->with('company', $company);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     *
-     *
-     */
+
     public function edit($id)
     {
-        $company = Company::find($id);
-        $users = User::all();
-
+        $company = Company::find($id)->load('users');
+        $users = User::whereDoesntHave(
+            'companies',
+            static function (Builder $query) use ($id) {
+                $query->where('company_id', $id);
+            }
+        )->get();
         return view(
             'pages.companies.edit',
             [
                 'company' => $company,
-                'users'   => $users,
-                'route'   => route(
+                'users' => $users,
+                'route' => route(
                     'company.update',
                     [
                         'company' =>
                             $company->id,
                     ]
                 ),
-                'method'  => 'PUT',
+                'method' => 'PUT',
             ]
         );
     }
 
+
     /**
-     * Update the specified resource in storage.
-     *
      * @param Request $request
-     * @param int     $id
-     *
-     * @return Response
+     * @param $id
+     * @return RedirectResponse
+     * @throws ValidationException
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         $this->validate($request, ['name' => 'required']);
         $company = Company::find($id);
         $company->name = $request->input('name');
-        $users = $request->input('users');
+        $users = $request->input('users') ?? [];
         if (count($users) > 0) {
             foreach ($users as $user) {
                 $company->users()->attach($user);
@@ -121,17 +122,16 @@ class CompanyController extends Controller
         return redirect()->route('company.index')->with('success', __('Successfully saved'));
     }
 
+
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     *
+     * @param $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
-        Company::destroy($id);
-
+        $company = Company::find($id);
+        $company->users()->detach();
+        $company->delete();
         return new Response();
     }
 }
