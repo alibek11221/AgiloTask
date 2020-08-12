@@ -11,15 +11,18 @@ class CreateEventsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create(
             'events',
-            function (Blueprint $table) {
+            static function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
                 $table->decimal('cost');
                 $table->string('type');
+                $table->foreignId('company_id');
+                $table->foreignId('user_id');
+                $table->foreignId('shift_id');
                 $table->date('date');
             }
         );
@@ -30,7 +33,7 @@ class CreateEventsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('events');
     }

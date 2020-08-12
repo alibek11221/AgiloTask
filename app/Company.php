@@ -16,10 +16,6 @@ class Company extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function shifts(): HasMany
-    {
-        return $this->hasMany(Shift::class);
-    }
 
     public function events(): HasMany
     {

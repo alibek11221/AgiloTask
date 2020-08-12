@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('pages.companies.inc.form')
+    @include('pages.events.inc.form')
 @endsection
 @section('javascritps')
     <script>

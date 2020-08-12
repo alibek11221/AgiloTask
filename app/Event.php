@@ -10,10 +10,10 @@ class Event extends Model
 {
     protected $table = 'events';
     protected $fillable = ['name', 'cost', 'type'];
-
-    public function shift(): HasOne
+    public $timestamps = false;
+    public function shift(): BelongsTo
     {
-        return $this->hasOne(Shift::class);
+        return $this->belongsTo(Shift::class);
     }
 
     public function company(): BelongsTo

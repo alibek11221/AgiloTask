@@ -3,21 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Shift extends Model
 {
     protected $table = 'shifts';
     protected $fillable = ['name'];
 
-    public function company(): BelongsTo
-    {
-        return $this->belongsTo(Company::class);
-    }
 
-    public function event(): HasOne
+    public function event(): HasMany
     {
-        return $this->hasOne(Event::class);
+        return $this->hasMany(Event::class);
     }
 }

@@ -17,8 +17,7 @@ class CreateShiftsTable extends Migration
             'shifts',
             function (Blueprint $table) {
                 $table->id();
-                $table->string('name');
-                $table->foreignId('company_id');
+                $table->string('name')->unique();
                 $table->timestamps();
             }
         );

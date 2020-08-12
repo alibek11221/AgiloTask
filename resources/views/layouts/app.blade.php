@@ -44,6 +44,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('company.index')}}">{{__('Companies')}}</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('event.index')}}">{{__('Events')}}</a>
+                    </li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
