@@ -106,7 +106,19 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return $request->input('users');
+        $this->validate($request, ['name' => 'required']);
+        $company = Company::find($id);
+        $company->name = $request->input('name');
+        $users = $request->input('users');
+        if (count($users) > 0) {
+            foreach ($users as $user) {
+                $company->users()->attach($user);
+            }
+        }
+
+        $company->save();
+
+        return redirect()->route('company.index')->with('success', __('Successfully saved'));
     }
 
     /**
@@ -118,6 +130,8 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Company::destroy($id);
+
+        return new Response();
     }
 }
