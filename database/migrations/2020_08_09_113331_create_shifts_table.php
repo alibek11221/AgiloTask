@@ -18,6 +18,7 @@ class CreateShiftsTable extends Migration
             function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
+                $table->foreignId('company_id');
                 $table->timestamps();
             }
         );

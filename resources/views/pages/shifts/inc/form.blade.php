@@ -1,6 +1,6 @@
 <form action="{{$route}}" method="POST">
     @csrf
-    @if($method)
+    @if(isset($method))
         @method($method)
     @endif
     <div class="form-group">

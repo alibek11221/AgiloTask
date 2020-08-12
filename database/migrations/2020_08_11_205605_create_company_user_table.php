@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEventsTable extends Migration
+class CreateCompanyUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,13 +14,12 @@ class CreateEventsTable extends Migration
     public function up()
     {
         Schema::create(
-            'events',
+            'company_user',
             function (Blueprint $table) {
                 $table->id();
-                $table->string('name');
-                $table->decimal('cost');
-                $table->string('type');
-                $table->date('date');
+                $table->foreignId('user_id')->constrained();
+                $table->foreignId('company_id')->constrained();
+                $table->timestamps();
             }
         );
     }
@@ -32,6 +31,6 @@ class CreateEventsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('company_user');
     }
 }

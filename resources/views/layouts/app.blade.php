@@ -17,7 +17,9 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css"/>
     @yield('stylesheets')
 </head>
 <body>
@@ -38,6 +40,9 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('shift.index')}}">{{__('Shifts')}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('company.index')}}">{{__('Companies')}}</a>
                     </li>
                 </ul>
 
@@ -84,6 +89,9 @@
         @yield('content')
     </main>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 @yield('javascritps')
 </body>
 </html>

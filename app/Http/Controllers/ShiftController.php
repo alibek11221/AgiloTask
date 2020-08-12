@@ -114,7 +114,7 @@ class ShiftController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): Response
     {
         Shift::destroy($id);
 

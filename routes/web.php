@@ -20,9 +20,15 @@ Route::get(
         return view('pages.index');
     }
 );
-
+/**
+ * @see \App\Http\Controllers\ShiftController
+ */
 Route::resource('shift', 'ShiftController');
 
+/**
+ * @see \App\Http\Controllers\CompanyController
+ */
+Route::resource('company', 'CompanyController');
 Auth::routes();
 /**
  * @see \App\Http\Controllers\HomeController::index()

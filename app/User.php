@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -14,33 +16,29 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable
-        = [
-            'name',
-            'email',
-            'password',
-            'surname',
-            'patronymic',
-        ];
+    protected $fillable = ['name', 'email', 'password', 'surname', 'patronymic'];
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $hidden
-        = [
-            'password',
-            'remember_token',
-        ];
+    protected $hidden = ['password', 'remember_token',];
 
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $casts
-        = [
-            'email_verified_at' => 'datetime',
-        ];
+    protected $casts = ['email_verified_at' => 'datetime'];
+
+    public function companies(): BelongsToMany
+    {
+        return $this->belongsToMany(Company::class);
+    }
+
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class);
+    }
 }
