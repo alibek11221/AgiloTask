@@ -20,9 +20,9 @@ class CreateEventsTable extends Migration
                 $table->string('name');
                 $table->decimal('cost');
                 $table->string('type');
-                $table->foreignId('company_id');
+                $table->foreignId('company_id')->constrained()->cascadeOnDelete();
+                $table->foreignId('shift_id')->constrained()->cascadeOnDelete();
                 $table->foreignId('user_id');
-                $table->foreignId('shift_id');
                 $table->date('date');
             }
         );

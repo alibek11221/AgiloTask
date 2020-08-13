@@ -33,7 +33,7 @@ class ShiftController extends Controller
      *
      * @return Renderable
      */
-    public function create()
+    public function create(): Renderable
     {
         return view('pages.shifts.create', ['route' => route('shift.store')]);
     }

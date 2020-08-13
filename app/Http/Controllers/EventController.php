@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     public function index()
     {
@@ -124,8 +128,8 @@ class EventController extends Controller
         $validator = $this->setValidator($request);
         $this->setValues($request, $event);
         $validator->after(
-            function ($validator) use ($event) {
-                if ($this->shiftIsBusy($event)) {
+            function ($validator) use ($event, $request) {
+                if ($event->shift->id != $request->input('shift') && $this->shiftIsBusy($event)) {
                     $validator->errors()->add('shift', __('The shift is busy'));
                 }
             }
