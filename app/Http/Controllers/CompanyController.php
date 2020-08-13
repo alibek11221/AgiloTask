@@ -50,7 +50,7 @@ class CompanyController extends Controller
         $company = new Company();
         $company->name = $request->input('name');
         $company->save();
-        $users = $request->input('users');
+        $users = $request->input('users')??[];
         if (count($users) > 0) {
             $company->users()->attach($users);
         }
