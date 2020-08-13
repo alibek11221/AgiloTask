@@ -16,7 +16,7 @@
         </label>
         <select id="users" name="users[]" multiple>
             @foreach($users as $user)
-                <option value="{{$user->id}}">{{$user->name}}</option>
+                <option @if(isset($company) && $company->users->contains($user->id)) selected @endif value="{{$user->id}}">{{$user->name}}</option>
             @endforeach
         </select>
     </div>

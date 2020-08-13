@@ -75,12 +75,7 @@ class CompanyController extends Controller
     public function edit($id)
     {
         $company = Company::find($id)->load('users');
-        $users = User::whereDoesntHave(
-            'companies',
-            static function (Builder $query) use ($id) {
-                $query->where('company_id', $id);
-            }
-        )->get();
+        $users = User::all();
         return view(
             'pages.companies.edit',
             [
@@ -111,11 +106,7 @@ class CompanyController extends Controller
         $company = Company::find($id);
         $company->name = $request->input('name');
         $users = $request->input('users') ?? [];
-        if (count($users) > 0) {
-            foreach ($users as $user) {
-                $company->users()->attach($user);
-            }
-        }
+        $company->users()->sync($users);
 
         $company->save();
 
